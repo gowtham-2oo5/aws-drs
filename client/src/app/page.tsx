@@ -48,60 +48,6 @@ export default function Home() {
             </div>
           </div>
         </section>
-        <section className="w-full h-screen flex items-center justify-center py-12 md:py-24 lg:py-32 bg-gray-100 ">
-          <div className="container px-4 md:px-6">
-            <div className="grid gap-6 items-center">
-              <div className="flex flex-col justify-center space-y-8 text-center">
-                <div className="space-y-2">
-                  <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-                    How It Works
-                  </h2>
-                  <p className="max-w-[600px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400 mx-auto">
-                    Our document review system simplifies your workflow in three
-                    easy steps.
-                  </p>
-                </div>
-              </div>
-              <div className="mx-auto grid max-w-5xl items-center gap-6 sm:grid-cols-2 md:gap-12 lg:grid-cols-3">
-                <Card>
-                  <CardHeader>
-                    <Upload className="h-10 w-10 mb-2" />
-                    <CardTitle>1. Upload Document</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-gray-500">
-                      Simply upload any type of document to our secure platform.
-                    </p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardHeader>
-                    <Search className="h-10 w-10 mb-2" />
-                    <CardTitle>2. AI-Powered Review</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-gray-500">
-                      Our AWS-backed AI analyzes the content and generates a
-                      comprehensive review.
-                    </p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardHeader>
-                    <History className="h-10 w-10 mb-2" />
-                    <CardTitle>3. Access History</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-gray-500">
-                      Easily access your document history and generated reviews
-                      at any time.
-                    </p>
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
-          </div>
-        </section>
         <section className="w-full py-12 md:py-24 lg:py-32">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col justify-center space-y-8 text-center">
@@ -116,6 +62,7 @@ export default function Home() {
             </div>
             <div className="mx-auto mt-16 max-w-4xl">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {/* User Upload */}
                 <div className="flex flex-col items-center text-center">
                   <div className="w-16 h-16 bg-primary text-primary-foreground rounded-full flex items-center justify-center mb-4">
                     <Upload className="w-8 h-8" />
@@ -125,6 +72,8 @@ export default function Home() {
                     Document is uploaded by the user
                   </p>
                 </div>
+
+                {/* S3 Storage */}
                 <div className="flex flex-col items-center text-center">
                   <div className="w-16 h-16 bg-primary text-primary-foreground rounded-full flex items-center justify-center mb-4">
                     <Database className="w-8 h-8" />
@@ -134,43 +83,53 @@ export default function Home() {
                     Document is securely stored in AWS S3
                   </p>
                 </div>
+
+                {/* Document Review */}
                 <div className="flex flex-col items-center text-center">
                   <div className="w-16 h-16 bg-primary text-primary-foreground rounded-full flex items-center justify-center mb-4">
                     <Bot className="w-8 h-8" />
                   </div>
-                  <h3 className="font-semibold mb-2">AWS Textract</h3>
+                  <h3 className="font-semibold mb-2">Document Review</h3>
                   <p className="text-sm text-gray-500">
-                    Extracts text and data from the document
+                    Reviewers provide feedback on the document
                   </p>
                 </div>
-                <div className="flex flex-col items-center text-center">
-                  <div className="w-16 h-16 bg-primary text-primary-foreground rounded-full flex items-center justify-center mb-4">
-                    <Brain className="w-8 h-8" />
-                  </div>
-                  <h3 className="font-semibold mb-2">Amazon Comprehend</h3>
-                  <p className="text-sm text-gray-500">
-                    Analyzes the extracted text for insights
-                  </p>
-                </div>
+
+                {/* Review Status */}
                 <div className="flex flex-col items-center text-center">
                   <div className="w-16 h-16 bg-primary text-primary-foreground rounded-full flex items-center justify-center mb-4">
                     <CheckCircle className="w-8 h-8" />
                   </div>
-                  <h3 className="font-semibold mb-2">Amazon A2I</h3>
+                  <h3 className="font-semibold mb-2">Review Status</h3>
                   <p className="text-sm text-gray-500">
-                    Reviews and improves the analysis results
+                    Track status: Pending, Reviewed, or Feedback Provided
                   </p>
                 </div>
+
+                {/* Notification */}
                 <div className="flex flex-col items-center text-center">
                   <div className="w-16 h-16 bg-primary text-primary-foreground rounded-full flex items-center justify-center mb-4">
                     <Zap className="w-8 h-8" />
                   </div>
-                  <h3 className="font-semibold mb-2">Lambda Function</h3>
+                  <h3 className="font-semibold mb-2">Notification</h3>
                   <p className="text-sm text-gray-500">
-                    Processes the final output
+                    Users are notified once their document is reviewed
+                  </p>
+                </div>
+
+                {/* Admin Dashboard */}
+                <div className="flex flex-col items-center text-center">
+                  <div className="w-16 h-16 bg-primary text-primary-foreground rounded-full flex items-center justify-center mb-4">
+                    <Brain className="w-8 h-8" />
+                  </div>
+                  <h3 className="font-semibold mb-2">Admin Dashboard</h3>
+                  <p className="text-sm text-gray-500">
+                    Admins manage documents, reviewers, and feedback
                   </p>
                 </div>
               </div>
+
+              {/* API Gateway */}
               <div className="mt-12 flex flex-col items-center text-center">
                 <div className="w-16 h-16 bg-primary text-primary-foreground rounded-full flex items-center justify-center mb-4">
                   <Globe className="w-8 h-8" />
