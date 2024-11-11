@@ -1,147 +1,202 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Progress } from "@/components/ui/progress"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { LogOut, Upload, FileText } from "lucide-react"
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Search,
+  Upload,
+  FileText,
+  BarChart2,
+  Database,
+  LogOut,
+} from "lucide-react";
+import Link from "next/link";
 
-export default function DocumentReviewPage() {
-  const [review, setReview] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
-  const [progress, setProgress] = useState(0)
+export default function UserDashboard() {
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [documents, setDocuments] = useState([
+    {
+      id: 1,
+      name: "Document1.pdf",
+      status: "Processed",
+      sentiment: "Positive",
+      entities: 5,
+    },
+    {
+      id: 2,
+      name: "Document2.docx",
+      status: "Processing",
+      sentiment: "-",
+      entities: "-",
+    },
+    {
+      id: 3,
+      name: "Document3.txt",
+      status: "Failed",
+      sentiment: "-",
+      entities: "-",
+    },
+  ]);
 
-  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
-    if (!file) return
-
-    setIsLoading(true)
-    setProgress(0)
-
-    // Simulating file upload and review generation with progress updates
-    for (let i = 0; i <= 100; i += 10) {
-      await new Promise(resolve => setTimeout(resolve, 200))
-      setProgress(i)
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      setSelectedFile(event.target.files[0]);
     }
+  };
 
-    // Placeholder for API call to backend service
-    // Replace this with actual API call to your backend
-    try {
-      await new Promise(resolve => setTimeout(resolve, 1000)) // Simulating final processing
-      setReview("This is a placeholder review for the uploaded document. Replace this with the actual review from your backend service.")
-    } catch (error) {
-      console.error("Error generating review:", error)
-      setReview("An error occurred while generating the review.")
-    } finally {
-      setIsLoading(false)
-      setProgress(0)
+  const handleUpload = () => {
+    if (selectedFile) {
+      // Simulating file upload and processing
+      setDocuments((prev) => [
+        {
+          id: prev.length + 1,
+          name: selectedFile.name,
+          status: "Processing",
+          sentiment: "-",
+          entities: "-",
+        },
+        ...prev,
+      ]);
+      setSelectedFile(null);
+      // Reset file input
+      const fileInput = document.getElementById(
+        "file-upload"
+      ) as HTMLInputElement;
+      if (fileInput) fileInput.value = "";
     }
-  }
+  };
 
   return (
-    <div className="min-h-screen p-3 bg-background flex flex-col">
-      <header className="border-b">
-        <nav className="container py-6">
-          <div className="flex items-center justify-between">
-            <h1 className="text-3xl font-bold">DocReview</h1>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" aria-label="User menu">
-                  <Avatar>
-                    <AvatarImage src="/placeholder.svg?height=32&width=32" alt="User avatar" />
-                    <AvatarFallback>U</AvatarFallback>
-                  </Avatar>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Profile Settings</DropdownMenuItem>
-                <DropdownMenuItem>
-                  <LogOut className="mr-2 h-4 w-4" />
-                  <span>Log out</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
+    <div className="flex flex-col min-h-screen">
+      <header className="px-4 lg:px-6 h-16 flex items-center border-b">
+        <Link className="flex items-center justify-center" href="/">
+          <Search className="h-6 w-6 mr-2" />
+          <span className="font-bold">DocReviewGen</span>
+        </Link>
+        <nav className="ml-auto flex gap-4 sm:gap-6">
+          <Button variant="ghost" className="text-sm font-medium">
+            Dashboard
+          </Button>
+          <Button variant="ghost" className="text-sm font-medium">
+            Settings
+          </Button>
+          <Button variant="ghost" className="text-sm font-medium">
+            <LogOut className="h-4 w-4 mr-2" />
+            Logout
+          </Button>
         </nav>
       </header>
-
-      <main className="flex-grow container py-10 flex flex-col items-center">
-        <div className="w-full max-w-4xl">
-          <Tabs defaultValue="upload" className="space-y-8">
-            <div className="flex justify-center">
-              <TabsList className="grid w-full max-w-md grid-cols-2">
-                <TabsTrigger value="upload">Upload Document</TabsTrigger>
-                <TabsTrigger value="history">Documents History</TabsTrigger>
-              </TabsList>
-            </div>
-            <TabsContent value="upload" className="space-y-8">
-              <div className="flex flex-col items-center space-y-6">
-                <label htmlFor="file-upload" className="w-full">
-                  <Input
-                    id="file-upload"
-                    type="file"
-                    onChange={handleFileUpload}
-                    accept=".pdf,image/*"
-                    disabled={isLoading}
-                    className="sr-only"
-                  />
-                  <div className="flex items-center justify-center w-full border-2 border-dashed border-gray-300 rounded-lg p-8 cursor-pointer hover:border-gray-400 transition-colors">
-                    <div className="space-y-2 text-center">
-                      <Upload className="mx-auto h-16 w-16 text-gray-400" />
-                      <div className="flex flex-col text-sm text-gray-600">
-                        <span className="relative font-medium text-primary hover:underline focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-primary">
-                          Upload a file
-                        </span>
-                        <p>or drag and drop</p>
-                      </div>
-                      <p className="text-xs text-gray-500">PDF or Image up to 10MB</p>
-                    </div>
-                  </div>
-                </label>
-                {isLoading && (
-                  <div className="w-full max-w-md space-y-4">
-                    <div className="flex items-center space-x-4">
-                      <div className="animate-pulse">
-                        <FileText className="h-8 w-8 text-primary" />
-                      </div>
-                      <div className="flex-1 space-y-2">
-                        <Progress value={progress} className="w-full" />
-                        <p className="text-sm text-muted-foreground">
-                          {progress < 100 ? "Uploading and analyzing document..." : "Generating review..."}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                )}
+      <main className="flex-1 py-12 px-4 md:px-6 lg:px-8 bg-gray-100">
+        <div className="max-w-6xl mx-auto space-y-8">
+          <h1 className="text-3xl font-bold">Welcome to Your Dashboard</h1>
+          <Card>
+            <CardHeader>
+              <CardTitle>Upload New Document</CardTitle>
+              <CardDescription>
+                Upload a document to start the review process
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center gap-4">
+                <Input
+                  id="file-upload"
+                  type="file"
+                  onChange={handleFileChange}
+                />
+                <Button onClick={handleUpload} disabled={!selectedFile}>
+                  <Upload className="h-4 w-4 mr-2" />
+                  Upload
+                </Button>
               </div>
-              {review && (
-                <div className="rounded-lg border p-8 bg-card">
-                  <h2 className="text-2xl font-semibold mb-6">Document Review:</h2>
-                  <p className="text-card-foreground text-lg leading-relaxed">{review}</p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>Document Processing Flow</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-center">
+                <div className="flex flex-col items-center">
+                  <Upload className="h-8 w-8 mb-2" />
+                  <p>Upload to S3</p>
                 </div>
-              )}
-            </TabsContent>
-            <TabsContent value="history">
-              <div className="text-center p-8 bg-card rounded-lg border">
-                <h2 className="text-2xl font-semibold mb-6">Document History</h2>
-                <p className="text-card-foreground text-lg">Your document history will be displayed here.</p>
+                <div className="hidden md:block">→</div>
+                <div className="flex flex-col items-center">
+                  <FileText className="h-8 w-8 mb-2" />
+                  <p>Textract OCR</p>
+                </div>
+                <div className="hidden md:block">→</div>
+                <div className="flex flex-col items-center">
+                  <BarChart2 className="h-8 w-8 mb-2" />
+                  <p>Comprehend Analysis</p>
+                </div>
+                <div className="hidden md:block">→</div>
+                <div className="flex flex-col items-center">
+                  <Database className="h-8 w-8 mb-2" />
+                  <p>Store in DynamoDB</p>
+                </div>
               </div>
-            </TabsContent>
-          </Tabs>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>Your Documents</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Name</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Sentiment</TableHead>
+                    <TableHead>Entities Detected</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {documents.map((doc) => (
+                    <TableRow key={doc.id}>
+                      <TableCell>{doc.name}</TableCell>
+                      <TableCell>{doc.status}</TableCell>
+                      <TableCell>{doc.sentiment}</TableCell>
+                      <TableCell>{doc.entities}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
         </div>
       </main>
+      <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
+        <p className="text-xs text-gray-500">
+          © 2024 Document Review Generator. All rights reserved.
+        </p>
+        <nav className="sm:ml-auto flex gap-4 sm:gap-6">
+          <Link className="text-xs hover:underline underline-offset-4" href="#">
+            Terms of Service
+          </Link>
+          <Link className="text-xs hover:underline underline-offset-4" href="#">
+            Privacy
+          </Link>
+        </nav>
+      </footer>
     </div>
-  )
+  );
 }
