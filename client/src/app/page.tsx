@@ -185,15 +185,15 @@ export default function LandingPage() {
                   <div className="space-y-4">
                     <div className="flex items-center space-x-2">
                       <Mail className="h-4 w-4" />
-                      <span>contact@docreviewgen.com</span>
+                      <span>gowtham.ala.2oo5@gmail.com</span>
                     </div>
                     <div className="flex items-center space-x-2">
                       <Phone className="h-4 w-4" />
-                      <span>+1 (555) 123-4567</span>
+                      <span>+91 8297299998</span>
                     </div>
                     <div className="flex items-center space-x-2">
                       <MapPin className="h-4 w-4" />
-                      <span>123 Document Lane, Analysis City, DC 12345</span>
+                      <span>Guntur, Andhra Pradesh, India</span>
                     </div>
                   </div>
                 </CardContent>
