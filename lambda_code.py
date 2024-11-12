@@ -1,4 +1,4 @@
-import json
+# This is a S3 trigger Lambda function
 import urllib.parse
 import boto3
 from decimal import Decimal
