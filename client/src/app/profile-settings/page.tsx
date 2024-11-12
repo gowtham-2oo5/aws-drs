@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Search, User, Bell, Shield, LogOut } from "lucide-react";
+import { Search, Bell, Shield, LogOut } from "lucide-react";
 import Link from "next/link";
 
 export default function SettingsPage() {
@@ -115,7 +115,7 @@ export default function SettingsPage() {
                 <CardHeader>
                   <CardTitle>Security Settings</CardTitle>
                   <CardDescription>
-                    Manage your account's security.
+                    Manage your account&apos;s security.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
