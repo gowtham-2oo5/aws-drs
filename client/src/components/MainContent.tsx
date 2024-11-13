@@ -68,7 +68,15 @@ export default function MainContent() {
     try {
       const response = await fetch("/api/user/getHistory");
       if (!response.ok) throw new Error("Failed to fetch documents");
-      const data: ApiResponse = await response.json();
+      var data: ApiResponse = await response.json();
+      const userId = sessionStorage.getItem("userId");
+      console.log(`modifying data of user ${userId}`);
+      data.items = data.items.filter((item) =>
+        item.DocumentName.startsWith(userId!)
+      );
+      // data.items = data.items.filter((item) =>
+      //   item.DocumentName.startsWith(userId!)
+      // );
       const formattedDocuments = data.items.map(formatDocument);
       setDocuments(formattedDocuments);
     } catch (error) {
@@ -89,6 +97,7 @@ export default function MainContent() {
     status: "Processed",
     sentiment: item.Sentiment,
     entities: item.Entities.length,
+    // feedback:
   });
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
